@@ -53,6 +53,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.1")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
