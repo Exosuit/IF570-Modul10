@@ -1,5 +1,9 @@
 package com.android.example.myapplication
 
+import AuthViewModel
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +17,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+
+val imagePickerLauncher = rememberLauncherForActivityResult(
+    contract = GetContent()
+) { uri: Uri? ->
+    uri?.let {
+        selectedImageUri = it
+        // Upload selected image
+        authViewModel.uploadProfilePicture(it) { success, message
+            ->
+            if (success) {
+                snackbarMessage = "Profile picture updated!"
+            } else {
+                snackbarMessage = message ?: "Upload failed."
+            }
+        }
+    }
+}
+...
+val imagePickerLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.GetContent()
+    ...
+Button(onClick = { imagePickerLauncher.launch("image/*") }) {
+    Text("Upload/Change Profile Picture")
+}
+...
+Button(onClick = {
+    authViewModel.deleteProfilePicture { success, message ->
+        if (success) {
+            snackbarMessage = "Profile picture deleted!"
+        } else {
+            snackbarMessage = message ?: "Delete failed."
+        }
+    }
+}) {
+    Text("Delete Profile Picture")
+}
+
 
 @Composable
 fun HomeScreen(navController: NavController, authViewModel:
